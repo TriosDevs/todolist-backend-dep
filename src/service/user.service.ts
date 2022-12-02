@@ -1,7 +1,5 @@
-import { ConsoleLogger, HttpException, Injectable } from '@nestjs/common';
-import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import RegisterDto from 'src/domain/dto/register.dto';
 import { Repository } from 'typeorm';
 import { User } from '../domain/entity/user.entity';
 
@@ -28,17 +26,8 @@ export class UserService {
     await this.usersRepository.delete(id);
   }
 
-  async register(body: RegisterDto): Promise<User> {    
-
-    // create user
-    const user = new User();
-    user.firstName = body.name;
-    user.lastName = body.surname;
-    user.mail = body.mail;
-
-    // TODO: hash password
-    user.password = body.password;
-
+  async save(user: User): Promise<User> {
     return await this.usersRepository.save(user);
   }
+
 }

@@ -3,7 +3,7 @@ import { HomeController } from '../controller/home.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user.module';
 import { AuthModule } from './auth.module';
-import { UserController } from 'src/controller/user.controller';
+import { AuthController } from 'src/controller/auth.controller';
 
 // import dotenv
 import * as dotenv from 'dotenv';
@@ -26,7 +26,7 @@ dotenv.config();
     UserModule,
     AuthModule
   ],
-  controllers: [HomeController, UserController],
+  controllers: [HomeController, AuthController],
   providers: [],
 
 })
