@@ -1,9 +1,9 @@
 import { ConsoleLogger, HttpException, Injectable } from '@nestjs/common';
 import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { InjectRepository } from '@nestjs/typeorm';
-import RegisterDto from 'src/dto/register.dto';
+import RegisterDto from 'src/domain/dto/register.dto';
 import { Repository } from 'typeorm';
-import { User } from './user.entity';
+import { User } from '../domain/entity/user.entity';
 
 @Injectable()
 export class UserService {
@@ -20,22 +20,25 @@ export class UserService {
     return this.usersRepository.findOneBy({ id });
   }
 
+  async findOneByMail(mail: string): Promise<User> {
+    return await this.usersRepository.findOneBy({ mail });
+  }
+
   async remove(id: string): Promise<void> {
     await this.usersRepository.delete(id);
   }
 
-  async register(user: RegisterDto): Promise<User> {
+  async register(body: RegisterDto): Promise<User> {    
 
     // create user
-    const newUser = new User();
-    newUser.firstName = user.name;
-    newUser.lastName = user.surname;
-    newUser.mail = user.mail;
-    
+    const user = new User();
+    user.firstName = body.name;
+    user.lastName = body.surname;
+    user.mail = body.mail;
+
     // TODO: hash password
-    newUser.password = user.password;
+    user.password = body.password;
 
-
-    return await this.usersRepository.save(newUser);
+    return await this.usersRepository.save(user);
   }
 }

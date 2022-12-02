@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { HomeController } from '../controller/home.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './user/user.module';
+import { UserModule } from './user.module';
+import { AuthModule } from './auth.module';
+import { UserController } from 'src/controller/user.controller';
 
 // import dotenv
 import * as dotenv from 'dotenv';
@@ -18,15 +19,15 @@ dotenv.config();
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [
-        __dirname + '/**/*.entity{.ts,.js}',
+        __dirname + '/../**/*.entity{.ts,.js}',  
       ],
       synchronize: true,
     }),
-    UserModule
-
+    UserModule,
+    AuthModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [HomeController, UserController],
+  providers: [],
 
 })
 export class AppModule { }
