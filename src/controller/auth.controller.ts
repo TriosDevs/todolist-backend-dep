@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseFilters } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseFilters } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/core/http.exception.filter';
 import SuccessDataMessage from 'src/core/success.data.message';
 import SuccessMessage from 'src/core/success.message';
@@ -22,7 +22,9 @@ export class AuthController {
 
   // login user
   @Post('login')
+  // @UseGuards(LocalAuthGuard)
   @UseFilters(new HttpExceptionFilter())
+  // @UseGuards(JwtAuthGuard)
   async login(@Body() body: LoginDto, @Req() request: Request): Promise<SuccessDataMessage<string>> {
 
     const token = await this.authService.login(body);

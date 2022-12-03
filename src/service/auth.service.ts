@@ -12,9 +12,9 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) { }
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.userService.findOneByMail(username);
-    if (user && user.password === pass) {
+  async validateUser(payload: any, callback: Function): Promise<any> {
+    const user = await this.userService.findOneByMail(payload.mail);
+    if (user && user.password === payload.sub) {
       const { password, ...result } = user;
       return result;
     }
@@ -25,7 +25,6 @@ export class AuthService {
     const payload = { username: user.mail, sub: user.password };
     return this.jwtService.sign(payload);
   }
-
 
   async register(body: RegisterDto): Promise<User> {
 

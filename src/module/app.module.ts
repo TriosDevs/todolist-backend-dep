@@ -7,6 +7,7 @@ import { AuthController } from 'src/controller/auth.controller';
 
 // import dotenv
 import * as dotenv from 'dotenv';
+import { UserController } from 'src/controller/user.controller';
 dotenv.config();
 
 @Module({
@@ -26,7 +27,7 @@ dotenv.config();
     UserModule,
     AuthModule
   ],
-  controllers: [HomeController, AuthController],
+  controllers: [HomeController, AuthController, UserController],
   providers: [],
 
 })
