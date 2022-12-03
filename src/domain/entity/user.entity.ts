@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { List } from './list.entity';
 
 @Entity()
 export class User {
@@ -23,6 +24,9 @@ export class User {
 
   @Column({ default: false })
   isConfirmed: boolean;
+
+  @OneToMany(type => List, list => list.user)
+  lists: List[];
 
 }
 

@@ -8,6 +8,7 @@ import { AuthController } from 'src/controller/auth.controller';
 // import dotenv
 import * as dotenv from 'dotenv';
 import { UserController } from 'src/controller/user.controller';
+import { ListModule } from './list.module';
 dotenv.config();
 
 @Module({
@@ -25,9 +26,10 @@ dotenv.config();
       synchronize: true,
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    ListModule
   ],
-  controllers: [HomeController, AuthController, UserController],
+  controllers: [HomeController],
   providers: [],
 
 })

@@ -30,21 +30,7 @@ export class UserController {
   async updateProfile(@Req() request: RequestWithUser, @Body() userDto: UserDto) {
 
     const user = request.user;
-
-    if (userDto.name) {
-      user.name = userDto.name;
-    }
-
-    if (userDto.surname) {
-      user.surname = userDto.surname;
-    }
-
-    if (userDto.mail) {
-      user.mail = userDto.mail;
-    }
-
     await this.userService.update(user.id, userDto);
-
     return new SuccessMessage("User updated", request.url);
   }
 
