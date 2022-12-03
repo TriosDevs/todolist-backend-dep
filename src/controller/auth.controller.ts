@@ -15,7 +15,6 @@ export class AuthController {
 
   //save user to database
   @Post()
-  @UseFilters(new HttpExceptionFilter())
   async register(@Body() body: RegisterDto, @Req() request: Request): Promise<SuccessMessage> {
     await this.authService.register(body);
     return new SuccessMessage('User saved successfully', request.url);
@@ -28,7 +27,5 @@ export class AuthController {
     const token = await this.authService.login(body);
     return new SuccessDataMessage<string>("Login successfully", token, request.url);
   }
-
-
 
 }

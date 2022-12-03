@@ -1,6 +1,5 @@
-import { HttpException, Injectable, Post } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HttpExceptionFilter } from 'src/core/http.exception.filter';
 import createTaskDto from 'src/domain/dto/create.task.dto';
 import { Task } from 'src/domain/entity/task.entity';
 import { Repository } from 'typeorm';

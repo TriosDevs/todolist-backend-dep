@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 @Catch(Error, HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  catch(exception: Error, host: ArgumentsHost) {
+  catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
@@ -11,11 +11,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (exception.message.includes('duplicate key value violates unique constraint '))
       exception.message = 'User already exists';
 
+    const status = exception instanceof HttpException
+
     response
-      .status(500)
+      .status(status ? exception.getStatus() : 500)
       .json({
         timestamp: Math.floor(Date.now() / 1000),
-        status: 500,
+        status: status ? exception.getStatus() : 500,
         message: exception.message,
         path: request.url,
       });

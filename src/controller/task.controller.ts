@@ -21,7 +21,6 @@ export class TaskController {
 
   @Put(":id")
   @UseGuards(JwtAuthGuard)
-  @UseFilters(HttpExceptionFilter)
   update(@Req() request: RequestWithUser, @Body() body: CreateTaskDto, @Param("id") id: number): SuccessMessage {
     this.taskSerivice.updateTask(id, body);
     return new SuccessMessage('Task updated', request.url);
@@ -29,7 +28,6 @@ export class TaskController {
 
   @Delete(":id")
   @UseGuards(JwtAuthGuard)
-  @UseFilters(HttpExceptionFilter)
   delete(@Req() request: RequestWithUser, @Param("id") id: number): SuccessMessage {
     this.taskSerivice.deleteTask(id);
     return new SuccessMessage('Task deleted', request.url);
