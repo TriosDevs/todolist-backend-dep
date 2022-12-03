@@ -3,12 +3,11 @@ import { HomeController } from '../controller/home.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user.module';
 import { AuthModule } from './auth.module';
-import { AuthController } from 'src/controller/auth.controller';
 
 // import dotenv
 import * as dotenv from 'dotenv';
-import { UserController } from 'src/controller/user.controller';
 import { ListModule } from './list.module';
+import { TaskModule } from './task.module';
 dotenv.config();
 
 @Module({
@@ -21,13 +20,14 @@ dotenv.config();
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [
-        __dirname + '/../**/*.entity{.ts,.js}',  
+        __dirname + '/../**/*.entity{.ts,.js}',
       ],
       synchronize: true,
     }),
     UserModule,
     AuthModule,
-    ListModule
+    ListModule,
+    TaskModule
   ],
   controllers: [HomeController],
   providers: [],

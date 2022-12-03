@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ListController } from 'src/controller/list.controller';
 import { List } from 'src/domain/entity/list.entity';
 import { ListService } from 'src/service/list.service';
+import { TaskModule } from './task.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([List])],
@@ -10,4 +11,4 @@ import { ListService } from 'src/service/list.service';
   providers: [ListService],
   exports: [ListService]
 })
-export class ListModule {}
+export class ListModule { }

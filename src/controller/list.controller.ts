@@ -1,11 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseFilters, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { HttpExceptionFilter } from 'src/core/http.exception.filter';
+import SuccessDataMessage from 'src/core/success.data.message';
 import SuccessMessage from 'src/core/success.message';
 import CreateListDto from 'src/domain/dto/create.list.dto';
 import { RequestWithUser } from 'src/domain/dto/request.with.user.dto';
+import { List } from 'src/domain/entity/list.entity';
 import { ListService } from 'src/service/list.service';
 
 @Controller("api/list")
+@UseFilters(new HttpExceptionFilter())
 export class ListController {
 
   constructor(private listService: ListService) { }
@@ -40,11 +44,17 @@ export class ListController {
   @Delete(":id")
   @UseGuards(JwtAuthGuard)
   deleteList(@Req() request: RequestWithUser, @Param("id") id: number): SuccessMessage {
+    this.listService.deleteList(id);
+    return new SuccessMessage('List deleted', request.url);
+  }
+
+  @Get(":id/tasks")
+  @UseGuards(JwtAuthGuard)
+  async getList(@Req() request: RequestWithUser, @Param("id") id: number) {
     const user = request.user;
 
-    this.listService.deleteList(id);
-
-    return new SuccessMessage('List deleted', request.url);
+    const list = await this.listService.getList(id);
+    return new SuccessDataMessage<List>('List fetched', list, request.url);
   }
 }
 

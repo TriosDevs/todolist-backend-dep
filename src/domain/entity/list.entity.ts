@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Task } from './task.entity';
 import { User } from './user.entity';
 
 @Entity()
@@ -15,6 +16,9 @@ export class List {
 
   @ManyToOne(type => User, user => user.lists)
   user: number;
+
+  @OneToMany(type => Task, task => task.list, { onDelete: 'CASCADE' })
+  tasks: Task[];
 
 }
 

@@ -39,4 +39,27 @@ export class ListService {
 
     return this.listRepository.delete({ id: listId });
   }
+
+  async getList(id: number): Promise<List> {
+
+    const result = this.listRepository.createQueryBuilder("list")
+      .innerJoinAndSelect("list.tasks", "task")
+      .where("list.id = :id", { id: id })
+      .getOne();
+
+    return result;
+  }
+
+  async save(list: List): Promise<List> {
+    return this.listRepository.save(list);
+  }
+
+  async findById(id: number): Promise<List> {
+    return this.listRepository.findOneBy({
+      id: id
+    });
+  }
 }
+
+
+

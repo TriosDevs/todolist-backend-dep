@@ -7,6 +7,7 @@ import RegisterDto from 'src/domain/dto/register.dto';
 import { AuthService } from 'src/service/auth.service';
 
 @Controller('auth')
+@UseFilters(new HttpExceptionFilter())
 export class AuthController {
 
   // inject user service
@@ -22,9 +23,6 @@ export class AuthController {
 
   // login user
   @Post('login')
-  // @UseGuards(LocalAuthGuard)
-  @UseFilters(new HttpExceptionFilter())
-  // @UseGuards(JwtAuthGuard)
   async login(@Body() body: LoginDto, @Req() request: Request): Promise<SuccessDataMessage<string>> {
 
     const token = await this.authService.login(body);
