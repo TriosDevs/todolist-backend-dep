@@ -30,7 +30,7 @@ This is a side project developed by me (aka [Khan](https://oguzhanercelik.dev)).
 
 This backend restful api was developed by NestJS framework and used TypeORM with PostgreSQL.
 
-<img src="https://raw.githubusercontent.com/TriosDevs/todolist-backend/master/Untitled%20Diagram.drawio-2.svg?token=GHSAT0AAAAAAB25IRVEKTQ7RHFDVO22JKR4Y4MVQRA" alt="db-design"/>
+<img src="https://raw.githubusercontent.com/TriosDevs/todolist-backend/master/todolist-db-design.svg?token=GHSAT0AAAAAAB25IRVF3L3OIFIBYRF3F5JSY4MVRSQ" alt="db-design"/>
 
 ## Installation
 
