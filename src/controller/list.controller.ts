@@ -16,9 +16,10 @@ export class ListController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  getHello(@Req() request: RequestWithUser): object {
+  async getHello(@Req() request: RequestWithUser) {
     const user = request.user;
-    return { message: 'Hello World!' };
+    var result = await this.listService.getLists(user.id)
+    return new SuccessDataMessage("Lists fetched", result, request.url);
   }
 
   @Post()

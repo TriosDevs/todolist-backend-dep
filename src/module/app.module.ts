@@ -3,11 +3,12 @@ import { HomeController } from '../controller/home.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user.module';
 import { AuthModule } from './auth.module';
+import { ListModule } from './list.module';
+import { TaskModule } from './task.module';
+import { JwtStrategy } from 'src/auth/jwt.strategy';
 
 // import dotenv
 import * as dotenv from 'dotenv';
-import { ListModule } from './list.module';
-import { TaskModule } from './task.module';
 dotenv.config();
 
 @Module({
@@ -24,13 +25,13 @@ dotenv.config();
       ],
       synchronize: true,
     }),
-    UserModule,
     AuthModule,
     ListModule,
-    TaskModule
+    TaskModule,
+    UserModule,
   ],
   controllers: [HomeController],
-  providers: [],
+  providers: [JwtStrategy],
 
 })
 export class AppModule { }

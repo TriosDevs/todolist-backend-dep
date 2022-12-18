@@ -59,6 +59,17 @@ export class ListService {
       id: id
     });
   }
+
+  async getLists(id: number) {
+
+    const result = await this.listRepository.createQueryBuilder("list")
+      .where("list.user = :id", {
+        id
+      }).getMany();
+
+    return result;
+  }
+
 }
 
 
