@@ -1,5 +1,6 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, UseFilters } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { HttpExceptionFilter } from 'src/core/http.exception.filter';
 import CreateListDto from 'src/domain/dto/create.list.dto';
 import { List } from 'src/domain/entity/list.entity';
 import { Repository } from 'typeorm';
@@ -21,7 +22,7 @@ export class ListService {
     const list = await this.listRepository.findOneBy({ id: listId });
 
     if (!list) {
-      throw new HttpException('List not found', 404);
+      throw new HttpException('List not found', 400);
     }
 
     if (body.name)
@@ -68,6 +69,13 @@ export class ListService {
       }).getMany();
 
     return result;
+  }
+
+  async countOfLists(userId: number) {
+    const count = await this.listRepository.count({
+      where: { user: userId }
+    })
+    return count
   }
 
 }

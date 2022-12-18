@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Req, UseFilters, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { HttpExceptionFilter } from 'src/core/http.exception.filter';
 import SuccessDataMessage from 'src/core/success.data.message';
@@ -9,13 +9,13 @@ import { List } from 'src/domain/entity/list.entity';
 import { ListService } from 'src/service/list.service';
 
 @Controller("api/list")
+@UseGuards(JwtAuthGuard)
 @UseFilters(new HttpExceptionFilter())
 export class ListController {
 
   constructor(private listService: ListService) { }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   async getHello(@Req() request: RequestWithUser) {
     const user = request.user;
     var result = await this.listService.getLists(user.id)
@@ -23,17 +23,24 @@ export class ListController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  createList(@Req() request: RequestWithUser, @Body() list: CreateListDto): SuccessMessage {
+  async createList(@Req() request: RequestWithUser, @Body() list: CreateListDto) {
     const user = request.user;
 
-    this.listService.createList(user.id, list);
+    const err = await this.listService.countOfLists(user.id).then((count) => {
+      if (count >= 5) {
+        return "You can't create more than 5 lists"
+      }
+    });
 
+    if (err) {
+      throw new HttpException(err, 400);
+    }
+
+    this.listService.createList(user.id, list);
     return new SuccessMessage('List created', request.url);
   }
 
   @Put(":id")
-  @UseGuards(JwtAuthGuard)
   updateList(@Req() request: RequestWithUser, @Body() list: CreateListDto, @Param("id") id: number): SuccessMessage {
     const user = request.user;
 
@@ -43,14 +50,12 @@ export class ListController {
   }
 
   @Delete(":id")
-  @UseGuards(JwtAuthGuard)
   deleteList(@Req() request: RequestWithUser, @Param("id") id: number): SuccessMessage {
     this.listService.deleteList(id);
     return new SuccessMessage('List deleted', request.url);
   }
 
   @Get(":id/tasks")
-  @UseGuards(JwtAuthGuard)
   async getList(@Req() request: RequestWithUser, @Param("id") id: number) {
     const user = request.user;
 
