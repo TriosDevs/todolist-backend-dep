@@ -13,7 +13,7 @@ export class AuthService {
   ) { }
 
   async validateUser(payload: any, callback: Function): Promise<any> {
-    const user = await this.userService.findOneByMail(payload.mail);
+    const user = await this.userService.findOneByMail(payload.username);
     if (user && user.password === payload.sub) {
       const { password, ...result } = user;
       return result;
