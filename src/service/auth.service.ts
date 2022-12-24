@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import LoginDto from 'src/domain/dto/login.dto';
 import RegisterDto from 'src/domain/dto/register.dto';
@@ -22,7 +22,16 @@ export class AuthService {
   }
 
   async login(user: LoginDto) {
+    // check if user exists
+    const userEntity = await this.userService.findOneByMail(user.mail);
+    if (!userEntity) {
+      throw new HttpException('Unauthorized', 401);
+    }
     const payload = { username: user.mail, sub: user.password };
+    // check if password is correct
+    if (userEntity.password !== user.password) {
+      throw new HttpException('Bad Credentials', 500);
+    }
     return this.jwtService.sign(payload);
   }
 
