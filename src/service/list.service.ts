@@ -19,16 +19,16 @@ export class ListService {
   }
 
   async updateList(userId: number, listId: number, body: CreateListDto) {
-    const list = await this.listRepository.findOneBy({ id: listId });
+    const response = await this.listRepository.findOneBy({ id: listId });
 
-    if (!list) {
-      throw new HttpException('List not found', 400);
-    }
+    if (response === null) return "List not found";
+    if (response.user !== userId) throw new Error('You are not allowed to edit this list');
+
 
     if (body.name)
-      list.name = body.name;
+      response.name = body.name;
 
-    return this.listRepository.save(list);
+    return this.listRepository.save(response);
   }
 
   async deleteList(listId: number) {

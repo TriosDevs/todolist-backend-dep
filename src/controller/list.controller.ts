@@ -44,7 +44,9 @@ export class ListController {
   updateList(@Req() request: RequestWithUser, @Body() list: CreateListDto, @Param("id") id: number): SuccessMessage {
     const user = request.user;
 
-    this.listService.updateList(user.id, id, list);
+    const res = this.listService.updateList(user.id, id, list);
+    if (res)
+      throw new HttpException("List not found!", 500);
 
     return new SuccessMessage('List updated', request.url);
   }
@@ -59,7 +61,10 @@ export class ListController {
   async getList(@Req() request: RequestWithUser, @Param("id") id: number) {
     const user = request.user;
 
-    const list = await this.listService.getList(id);
+    let list = await this.listService.getList(id);
+    if (!list) {
+      return new SuccessDataMessage<List>('List fetched', new List(), request.url);
+    }
     return new SuccessDataMessage<List>('List fetched', list, request.url);
   }
 }

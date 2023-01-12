@@ -14,7 +14,7 @@ export class TaskService {
     const list = await this.listService.findById(listId);
 
     if (!list) {
-      throw new HttpException('List not found', 500);
+      return "List not found"
     }
 
     const task = new Task();
@@ -27,7 +27,7 @@ export class TaskService {
 
   async updateTask(taskId: number, body: createTaskDto) {
 
-    const task = await this.taskRepository.findOneBy({id: taskId});    
+    const task = await this.taskRepository.findOneBy({ id: taskId });
 
     if (!task) {
       throw new HttpException('Task not found', 404);
@@ -43,7 +43,7 @@ export class TaskService {
   }
 
   deleteTask(id: number) {
-    const task = this.taskRepository.findOneBy({id: id});
+    const task = this.taskRepository.findOneBy({ id: id });
     if (!task) {
       throw new HttpException('Task not found', 404);
     }
